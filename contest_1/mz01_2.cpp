@@ -1,20 +1,19 @@
 #include <iostream>
 
-struct A
+class A
 {   
+private:
     int a;
     bool flag;
 
-
-    A() {
+public:
+    A() : flag(false){
         std::cin >> this->a;
-        flag = false;
     }
 
-    A(const A &b) {
+    A(const A &b) : flag(true){
         std::cin >> this->a;
         this->a += b.a;
-        flag = true;
     }
 
     ~A() {
