@@ -28,10 +28,16 @@ public:
         return now;
     }
 
-    void Add(const Rational &a) {
+    Rational Add(const Rational &a) {
         this->a *= a.b;
 
         this->a += a.a * this->b;
+        this->b *= a.b;
+        return *this;
+    }
+
+    void Multiply(const Rational &a) {
+        this->a *= a.a;
         this->b *= a.b;
     }
 
@@ -40,6 +46,26 @@ public:
 
         this->a -= a.a * this->b;
         this->b *= a.b;
+    }
+
+    bool EqualTo(const Rational &a) const {
+        return this->a == a.a && this->b == a.b;
+    }
+
+    int CompareTo(const Rational &a) const {
+        int tmp_1 = this->a * a.b;
+        int tmp_2 = this->b * a.a;
+
+        return tmp_1 - tmp_2;
+    }
+
+    bool IsInteger(void) const {
+        return b == 1;
+    }
+
+    void Divide(const Rational &a) {
+        this->a *= a.b;
+        this->b *= a.a;
     }
 };
 
@@ -51,7 +77,7 @@ int main() {
 
     Rational a = Rational(c, d);
     Rational b(1, 3);
-    a.Add(b);
+    a.Add(b).Multiply(b);
 
     std::cout << a.ToString() << " " << b.ToString() << std::endl;
 }
