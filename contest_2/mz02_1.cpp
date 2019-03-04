@@ -37,16 +37,17 @@ namespace numbers {
         friend complex operator -(const complex &num_1, const complex &num_2);
         friend complex operator *(const complex &num_1, const complex &num_2);
         friend complex operator /(const complex &num_1, const complex &num_2);
-    
-    
-        complex operator ~(void) const {
-            return complex(this->re, -this->im);
-        }
-
-        complex operator -(void) const {
-            return complex(-this->re, -this->im);
-        }
+        friend complex operator ~(const complex &num_1);
+        friend complex operator -(const complex &num_1);
     };
+    
+    complex operator -(const complex &num_1) {
+        return complex(-num_1.re, -num_1.im);
+    }
+    
+    complex operator ~(const complex &num_1) {
+        return complex(num_1.re, -num_1.im);
+    }
 
     complex operator +(const complex &num_1, const complex &num_2) {
         return complex(num_1.re + num_2.re, num_1.im + num_2.im);
