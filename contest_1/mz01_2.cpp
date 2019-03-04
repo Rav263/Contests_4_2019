@@ -7,11 +7,11 @@ private:
     bool flag;
 
 public:
-    A() : flag(false){
+    A() : flag(false) {
         std::cin >> this->a;
     }
 
-    A(const A &b) : flag(true){
+    A(const A &b) : flag(true) {
         std::cin >> this->a;
         this->a += b.a;
     }

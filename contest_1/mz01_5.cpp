@@ -1,51 +1,65 @@
 #include <string>
-#include <iostream>
+
+
+
 class Rational 
 {
-private:
     int a, b;
 
-    int gcd(int a, int b) {
-       return b ? gcd (b, a % b) : a;
+public:
+    int gcd_1(int a, int b) {
+        if (b) {
+            return gcd_1(b, a % b);
+        }
+        return a;
     }
 
     void min() {
-        int gc = gcd(this->a, this->b);
-        this->a /= gc;
-        this->b /= gc;
+        int gc = gcd_1(this->a, this->b);
+        if (gc > 0) {
+            this->a /= gc;
+            this->b /= gc;
+        }
+
+        if (this->a < 0 && this->b < 0) {
+            this->a *= -1;
+            this->b *= -1;
+        }
     }
 
-public:
 
-    Rational(int a, int b) {
-        this->a = a;
-        this->b = b;
+    Rational(int a = 0, int b = 1) : a(a), b(b) {
         min();
     }
 
-    std::string ToString() {
+    std::string ToString() const {
         std::string now = std::to_string(this->a) + ":" + std::to_string(this->b);
         return now;
     }
 
-    Rational Add(const Rational &a) {
-        this->a *= a.b;
-
-        this->a += a.a * this->b;
+    Rational & Add(const Rational &a) {
+        this->a = this->a * a.b + a.a * this->b;
         this->b *= a.b;
+        min();
+        
         return *this;
     }
 
-    void Multiply(const Rational &a) {
+    Rational & Multiply(const Rational &a) {
         this->a *= a.a;
         this->b *= a.b;
+        min();
+
+        return *this;
     }
 
-    void Substruct(const Rational &a) {
-        this->a *= a.b;
-
-        this->a -= a.a * this->b;
+    Rational & Substract(const Rational &a) {
+        this->a = this->a * a.b - a.a * this->b;
         this->b *= a.b;
+        
+        min();
+
+        return *this;
     }
 
     bool EqualTo(const Rational &a) const {
@@ -63,21 +77,15 @@ public:
         return b == 1;
     }
 
-    void Divide(const Rational &a) {
-        this->a *= a.b;
-        this->b *= a.a;
+    Rational & Divide(const Rational &a) {
+        int tmp_1 = this->a * a.b;
+        int tmp_2 = this->b * a.a;
+        
+        this->a = tmp_1;
+        this->b = tmp_2;
+
+        min();
+
+        return *this;
     }
 };
-
-
-int main() {
-    int c, d;
-
-    std::cin >> c >> d;
-
-    Rational a = Rational(c, d);
-    Rational b(1, 3);
-    a.Add(b).Multiply(b);
-
-    std::cout << a.ToString() << " " << b.ToString() << std::endl;
-}
