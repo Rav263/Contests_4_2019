@@ -3,34 +3,34 @@
 
 class S {
     int num;
+    bool flg;
 
 public:
-    S() {
-        std::cin >> num;
+    S() : num(0), flg(false) {
+        if (std::cin >> num) {
+            flg = true;
+        } 
     }
 
     explicit operator bool() const {
-        return true;     
+        return flg;
     }
 
-    static S move(const S &num) {
-        return num;
+    S(S &&now) : flg(true) {
+        if (std::cin >> num) {
+            num += now.num;
+            now.flg = false; 
+        } else {
+            num = 0;
+            flg = false;
+        }
     }
 
     ~S() {
-        std::cout << num << std::endl;
+        if (flg) {
+            std::cout << num << std::endl;
+        }
     }
 
 
 };
-void func(S v)
-{
-    if (v) {
-        func(std::move(v));
-    }
-}
-
-int main()
-{
-    func(S());
-}

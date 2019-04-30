@@ -35,7 +35,7 @@ template<typename T, typename F>
 std::vector<std::reference_wrapper<T>> 
 myfilter2(T *beg, T *end, F f) {
     std::vector<std::reference_wrapper<T>> res;
-    for (; beg != end; beg += 1) {
+    for (; beg != end; ++beg) {
         if (f(*beg)) {
             res.insert(res.end(), std::reference_wrapper<T>(*beg));
         }

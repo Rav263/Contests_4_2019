@@ -1,0 +1,17 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <ctype>
+
+int main() {
+    std::stack<std::string> stack;
+
+    char now;
+
+    while (std::cin >> now) {
+        if (islower(now)) {
+            stack.push(std::string(now));
+        }
+    }
+
+}
