@@ -10,13 +10,25 @@ void thread_function(std::vector<std::mutex> &acc_lock, std::vector<double> &acc
         uint32_t iter_count, uint32_t index_1, uint32_t index_2, double sum_1, double sum_2) {
 
     for (uint32_t i = 0; i < iter_count; i++) {
-        acc_lock[index_1].lock();
-        accs[index_1] += sum_1;
-        acc_lock[index_1].unlock();
+        if (index_1 > index_2) {
+            acc_lock[index_1].lock();
+            acc_lock[index_2].lock();
 
-        acc_lock[index_2].lock();
-        accs[index_2] += sum_2;
-        acc_lock[index_2].unlock();
+            accs[index_1] += sum_1;
+            accs[index_2] += sum_2;
+
+            acc_lock[index_2].unlock();
+            acc_lock[index_1].unlock();
+        } else {
+            acc_lock[index_2].lock();
+            acc_lock[index_1].lock();
+            
+            accs[index_1] += sum_1;
+            accs[index_2] += sum_2;
+            
+            acc_lock[index_1].unlock();
+            acc_lock[index_2].unlock();
+        }
     }
 }
 
