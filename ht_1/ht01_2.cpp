@@ -2,14 +2,12 @@
 #include <thread>
 #include <mutex>
 #include <vector>
+#include <functional>
+#include <stdio.h>
+
 
 void thread_function(std::vector<std::mutex> &acc_lock, std::vector<double> &accs, 
         uint32_t iter_count, uint32_t index_1, uint32_t index_2, double sum_1, double sum_2) {
-
-    acc_lock[0].lock();
-    std::cout << iter_count << " " << index_1 << " " << index_2 << " " << sum_1 << " " << sum_2 << std::endl;
-    acc_lock[0].unlock();
-
 
     for (uint32_t i = 0; i < iter_count; i++) {
         acc_lock[index_1].lock();
@@ -38,9 +36,8 @@ int main() {
         double sum_1, sum_2;
         
         std::cin >> iter_count >> index_1 >> sum_1 >> index_2 >> sum_2;
-        threads.push_back(std::thread([&](){thread_function(acc_lock, accs, 
-                        iter_count, index_1, index_2, sum_1, sum_2);}));
-     //   threads.push_back(std::thread(thread_function, acc_lock, accs));
+        threads.push_back(std::thread(thread_function, std::ref(acc_lock), std::ref(accs), iter_count,
+                    index_1, index_2, sum_1, sum_2));
     }
 
     for (uint32_t i = 0; i < thr_count; i++) {
